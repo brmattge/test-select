@@ -1,0 +1,50 @@
+<style>
+  body {
+    text-align: center;
+  }
+
+  #frutaInput {
+    padding: 8px 12px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 6px;
+    background-color: #f9f9f9;
+    color: #333;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.3s ease;
+  }
+
+  #frutaInput:hover {
+    border-color: #888;
+  }
+
+  #frutaInput:focus {
+    border-color: #007bff;
+    background-color: #fff;
+  }
+</style>
+
+<input
+  type="text"
+  id="frutaInput"
+  placeholder="Digite algo e pressione Enter"
+/>
+
+<div id="resultado" style="margin-top: 10px; font-size: 16px"></div>
+
+<script>
+  document
+    .getElementById("frutaInput")
+    .addEventListener("keydown", function (event) {
+      if (event.key === "Enter") {
+        const valorEscolhido = event.target.value.trim();
+        if (valorEscolhido) {
+          window.parent.postMessage(
+            { name: "custom-dropdown", data: valorEscolhido },
+            "*"
+          );
+        }
+      }
+    });
+</script>
