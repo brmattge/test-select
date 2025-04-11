@@ -1,0 +1,32 @@
+<select id="frutas" onchange="mostrarSelecao()">
+    <option value="">-- Selecione uma opção --</option>
+    <option value="maca">Maçã</option>
+    <option value="banana">Banana</option>
+    <option value="laranja">Laranja</option>
+    <option value="uva">Uva</option>
+    <option value="morango">Morango</option>
+</select>
+
+<div id="resultado"></div>
+
+<script>
+    function mostrarSelecao() {
+        // Obter o elemento select
+        const select = document.getElementById('frutas');
+        
+        // Obter o valor selecionado
+        const valorSelecionado = select.value;
+        
+        // Obter o texto da opção selecionada
+        const textoSelecionado = select.options[select.selectedIndex].text;
+        
+        // Atualizar o elemento de resultado
+        const resultado = document.getElementById('resultado');
+        
+        if (valorSelecionado) {
+            resultado.innerHTML = `Você selecionou: ${textoSelecionado} (valor: ${valorSelecionado})`;
+        } else {
+            resultado.innerHTML = 'Nenhuma fruta selecionada';
+        }
+    }
+</script>
