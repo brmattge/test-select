@@ -40,14 +40,10 @@
     const resultado = document.getElementById("resultado");
 
     if (valorSelecionado) {
-      resultado.innerHTML = `Selecionou: ${textoSelecionado} (valor: ${valorSelecionado})`;
-
-		window.parent.postMessage(
-		  { name: 'custom-dropdown', data: valorSelecionado },
-		  '*'
-		);
-    } else {
-      resultado.innerHTML = "Nenhuma fruta selecionada";
+      window.parent.postMessage(
+        { name: "custom-dropdown", data: valorSelecionado },
+        "*"
+      );
     }
   }
 </script>
