@@ -1,32 +1,53 @@
+<style>
+  #frutas {
+    padding: 8px 12px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 6px;
+    background-color: #f9f9f9;
+    color: #333;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.3s ease;
+  }
+
+  #frutas:hover {
+    border-color: #888;
+  }
+
+  #frutas:focus {
+    border-color: #007bff;
+    background-color: #fff;
+  }
+</style>
+
 <select id="frutas" onchange="mostrarSelecao()">
-    <option value="">-- Selecione uma opção --</option>
-    <option value="maca">Maçã</option>
-    <option value="banana">Banana</option>
-    <option value="laranja">Laranja</option>
-    <option value="uva">Uva</option>
-    <option value="morango">Morango</option>
+  <option value="">Selecione uma fruta</option>
+  <option value="abacaxi">Abacaxi</option>
+  <option value="banana">Banana</option>
+  <option value="laranja">Laranja</option>
+  <option value="uva">Uva</option>
+  <option value="morango">Morango</option>
 </select>
 
-<div id="resultado"></div>
+<div id="resultado" style="margin-top: 10px; font-size: 16px"></div>
 
 <script>
-    function mostrarSelecao() {
-        /// Obter o elemento select
-        const select = document.getElementById('frutas');
-        
-        // Obter o valor selecionado
-        const valorSelecionado = select.value;
-        
-        // Obter o texto da opção selecionada
-        const textoSelecionado = select.options[select.selectedIndex].text;
-        
-        // Atualizar o elemento de resultado
-        const resultado = document.getElementById('resultado');
-        
-        if (valorSelecionado) {
-            resultado.innerHTML = `Você selecionou: ${textoSelecionado} (valor: ${valorSelecionado})`;
-        } else {
-            resultado.innerHTML = 'Nenhuma fruta selecionada';
-        }
+  function mostrarSelecao() {
+    const select = document.getElementById("frutas");
+    const valorSelecionado = select.value;
+    const textoSelecionado = select.options[select.selectedIndex].text;
+    const resultado = document.getElementById("resultado");
+
+    if (valorSelecionado) {
+      resultado.innerHTML = `Selecionou: ${textoSelecionado} (valor: ${valorSelecionado})`;
+
+		window.parent.postMessage(
+		  { name: 'custom-dropdown', data: valorSelecionado },
+		  '*'
+		);
+    } else {
+      resultado.innerHTML = "Nenhuma fruta selecionada";
     }
+  }
 </script>
