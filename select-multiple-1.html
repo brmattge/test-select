@@ -1,83 +1,52 @@
-<!-- Incluindo o Select2 -->
-<link
-  href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css"
-  rel="stylesheet"
-/>
 <style>
-  /* Estilo Customizado */
-  body {
-    text-align: center;
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f5f5f5;
+  .dropdown-multiple {
+    position: relative;
+    width: 100%;
+    font-family: sans-serif;
   }
 
-  /* Personalizando a aparência do campo Select2 */
-  .select2-container .select2-selection--multiple {
-    min-height: 40px;
-    padding: 8px 11px;
-    font-size: 14px;
+  .dropdown-btn {
     border: 1px solid #d9d9d9;
     border-radius: 6px;
+    padding: 10px;
     background-color: #fff;
-    color: rgba(0, 0, 0, 0.85);
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-    transition: all 0.3s;
-    outline: none;
-  }
-
-  .select2-container .select2-selection--multiple:hover {
-    border-color: #4096ff;
-  }
-
-  .select2-container .select2-selection--multiple:focus {
-    border-color: #4096ff;
-    box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
-  }
-
-  .select2-container .select2-selection__choice {
-    background-color: #4096ff;
-    border-radius: 2px;
-    padding: 5px;
-    margin-right: 4px;
-  }
-
-  /* Personalizando o dropdown */
-  .select2-container .select2-dropdown {
-    max-height: 200px; /* Limita a altura do dropdown */
-    border-radius: 6px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-    padding: 0; /* Remover padding para evitar duplicação de rolagem */
-    width: 250px !important; /* Garantir que o dropdown tenha a mesma largura do input */
-  }
-
-  .select2-container .select2-results__option {
-    font-size: 14px;
+    cursor: pointer;
+    width: 100%;
     text-align: left;
-    padding-left: 14px;
   }
 
-  .select2-container .select2-results__option[aria-selected="true"] {
-    background-color: #4096ff;
-    color: #fff;
-  }
-
-  .select2-container .select2-results__option:hover {
-    background-color: #f0f0f0;
-    color: rgba(0, 0, 0, 0.85);
-  }
-
-  .select2-container--default .select2-results > .select2-results__options {
-    max-height: 130px;
+  .dropdown-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    background-color: #fff;
+    border: 1px solid #d9d9d9;
+    border-radius: 6px;
+    width: 100%;
+    max-height: 150px;
     overflow-y: auto;
+    display: none;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  }
+
+  .dropdown-list label {
+    display: block;
+    padding: 8px 12px;
+    cursor: pointer;
+  }
+
+  .dropdown-list input {
+    margin-right: 8px;
   }
 
   #btnSalvar {
+    margin-top: 10px;
     background-color: #fe3b00;
     color: white;
     border: none;
     border-radius: 5px;
     padding: 8px 16px;
-    margin-top: 10px;
     cursor: pointer;
     font-size: 16px;
   }
@@ -87,42 +56,59 @@
   }
 </style>
 
-<select id="frutas" multiple="multiple">
-  <option value="abacaxi">Abacaxi</option>
-  <option value="banana">Banana</option>
-  <option value="laranja">Laranja</option>
-  <option value="uva">Uva</option>
-  <option value="morango">Morango</option>
-  <option value="kiwi">Kiwi</option>
-  <option value="manga">Manga</option>
-  <option value="melancia">Melancia</option>
-</select>
+<div class="dropdown-multiple">
+  <div class="dropdown-btn" id="dropdownBtn">Selecione as frutas</div>
+  <div class="dropdown-list" id="dropdownList">
+    <label><input type="checkbox" value="abacaxi" /> Abacaxi</label>
+    <label><input type="checkbox" value="banana" /> Banana</label>
+    <label><input type="checkbox" value="laranja" /> Laranja</label>
+    <label><input type="checkbox" value="uva" /> Uva</label>
+    <label><input type="checkbox" value="morango" /> Morango</label>
+    <label><input type="checkbox" value="kiwi" /> Kiwi</label>
+    <label><input type="checkbox" value="manga" /> Manga</label>
+    <label><input type="checkbox" value="melancia" /> Melancia</label>
+  </div>
+</div>
 
 <button id="btnSalvar">Salvar</button>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
 <script>
-  $(document).ready(function () {
-    // Inicializando o Select2
-    $("#frutas").select2({
-      placeholder: "Selecione as frutas",
-      allowClear: true,
-      width: "100%",
-      dropdownAutoWidth: true,
-      closeOnSelect: false, // Mantém o dropdown aberto
-      dropdownParent: $(document.body),
-    });
+  const dropdownBtn = document.getElementById("dropdownBtn");
+  const dropdownList = document.getElementById("dropdownList");
 
-    $("#btnSalvar").on("click", function () {
-      const valorSelecionado = $("#frutas").val();
+  // Toggle dropdown
+  dropdownBtn.addEventListener("click", () => {
+    dropdownList.style.display =
+      dropdownList.style.display === "block" ? "none" : "block";
+  });
 
-      if (valorSelecionado && valorSelecionado.length > 0) {
-        window.parent.postMessage(
-          { name: "custom-message", data: valorSelecionado.toString() },
-          "*"
-        );
-      }
-    });
+  // Fecha dropdown se clicar fora
+  document.addEventListener("click", function (event) {
+    if (!event.target.closest(".dropdown-multiple")) {
+      dropdownList.style.display = "none";
+    }
+  });
+
+  // Atualiza o texto do botão com as frutas selecionadas
+  dropdownList.addEventListener("change", () => {
+    const selected = Array.from(
+      dropdownList.querySelectorAll("input:checked")
+    ).map((el) => el.value);
+    dropdownBtn.textContent =
+      selected.length > 0 ? selected.join(", ") : "Selecione as frutas";
+  });
+
+  // Enviar valores para o parent
+  document.getElementById("btnSalvar").addEventListener("click", () => {
+    const selecionadas = Array.from(
+      dropdownList.querySelectorAll("input:checked")
+    ).map((el) => el.value);
+
+    if (selecionadas.length > 0) {
+      window.parent.postMessage(
+        { name: "custom-message", data: selecionadas.toString() },
+        "*"
+      );
+    }
   });
 </script>
