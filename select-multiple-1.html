@@ -1,114 +1,113 @@
-<style>
-  .dropdown-multiple {
-    position: relative;
-    width: 100%;
-    font-family: sans-serif;
-  }
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dropdown Múltiplo Personalizado</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f5f5f5;
+        padding: 20px;
+      }
 
-  .dropdown-btn {
-    border: 1px solid #d9d9d9;
-    border-radius: 6px;
-    padding: 10px;
-    background-color: #fff;
-    cursor: pointer;
-    width: 100%;
-    text-align: left;
-  }
+      .dropdown {
+        position: relative;
+        display: inline-block;
+      }
 
-  .dropdown-list {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    z-index: 1000;
-    background-color: #fff;
-    border: 1px solid #d9d9d9;
-    border-radius: 6px;
-    width: 100%;
-    max-height: 150px;
-    overflow-y: auto;
-    display: none;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-  }
+      .dropdown-button {
+        padding: 10px;
+        font-size: 16px;
+        background-color: #4096ff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 200px;
+        text-align: left;
+      }
 
-  .dropdown-list label {
-    display: block;
-    padding: 8px 12px;
-    cursor: pointer;
-  }
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: white;
+        min-width: 200px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+      }
 
-  .dropdown-list input {
-    margin-right: 8px;
-  }
+      .dropdown-content label {
+        display: block;
+        padding: 8px;
+        cursor: pointer;
+      }
 
-  #btnSalvar {
-    margin-top: 10px;
-    background-color: #fe3b00;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 8px 16px;
-    cursor: pointer;
-    font-size: 16px;
-  }
+      .dropdown-content label:hover {
+        background-color: #f0f0f0;
+      }
 
-  #btnSalvar:hover {
-    background-color: #d83400;
-  }
-</style>
+      .dropdown-button.active + .dropdown-content {
+        display: block;
+      }
 
-<div class="dropdown-multiple">
-  <div class="dropdown-btn" id="dropdownBtn">Selecione as frutas</div>
-  <div class="dropdown-list" id="dropdownList">
-    <label><input type="checkbox" value="abacaxi" /> Abacaxi</label>
-    <label><input type="checkbox" value="banana" /> Banana</label>
-    <label><input type="checkbox" value="laranja" /> Laranja</label>
-    <label><input type="checkbox" value="uva" /> Uva</label>
-    <label><input type="checkbox" value="morango" /> Morango</label>
-    <label><input type="checkbox" value="kiwi" /> Kiwi</label>
-    <label><input type="checkbox" value="manga" /> Manga</label>
-    <label><input type="checkbox" value="melancia" /> Melancia</label>
-  </div>
-</div>
+      .selected-items {
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="dropdown">
+      <button class="dropdown-button">Selecione as frutas</button>
+      <div class="dropdown-content">
+        <label><input type="checkbox" value="abacaxi" /> Abacaxi</label>
+        <label><input type="checkbox" value="banana" /> Banana</label>
+        <label><input type="checkbox" value="laranja" /> Laranja</label>
+        <label><input type="checkbox" value="uva" /> Uva</label>
+        <label><input type="checkbox" value="morango" /> Morango</label>
+        <label><input type="checkbox" value="kiwi" /> Kiwi</label>
+        <label><input type="checkbox" value="manga" /> Manga</label>
+        <label><input type="checkbox" value="melancia" /> Melancia</label>
+      </div>
+    </div>
 
-<button id="btnSalvar">Salvar</button>
+    <div class="selected-items">
+      <strong>Selecionadas:</strong> <span id="selectedList">Nenhuma</span>
+    </div>
 
-<script>
-  const dropdownBtn = document.getElementById("dropdownBtn");
-  const dropdownList = document.getElementById("dropdownList");
-
-  // Toggle dropdown
-  dropdownBtn.addEventListener("click", () => {
-    dropdownList.style.display =
-      dropdownList.style.display === "block" ? "none" : "block";
-  });
-
-  // Fecha dropdown se clicar fora
-  document.addEventListener("click", function (event) {
-    if (!event.target.closest(".dropdown-multiple")) {
-      dropdownList.style.display = "none";
-    }
-  });
-
-  // Atualiza o texto do botão com as frutas selecionadas
-  dropdownList.addEventListener("change", () => {
-    const selected = Array.from(
-      dropdownList.querySelectorAll("input:checked")
-    ).map((el) => el.value);
-    dropdownBtn.textContent =
-      selected.length > 0 ? selected.join(", ") : "Selecione as frutas";
-  });
-
-  // Enviar valores para o parent
-  document.getElementById("btnSalvar").addEventListener("click", () => {
-    const selecionadas = Array.from(
-      dropdownList.querySelectorAll("input:checked")
-    ).map((el) => el.value);
-
-    if (selecionadas.length > 0) {
-      window.parent.postMessage(
-        { name: "custom-message", data: selecionadas.toString() },
-        "*"
+    <script>
+      const dropdownButton = document.querySelector(".dropdown-button");
+      const dropdownContent = document.querySelector(".dropdown-content");
+      const checkboxes = dropdownContent.querySelectorAll(
+        'input[type="checkbox"]'
       );
-    }
-  });
-</script>
+      const selectedList = document.getElementById("selectedList");
+
+      dropdownButton.addEventListener("click", () => {
+        dropdownButton.classList.toggle("active");
+      });
+
+      checkboxes.forEach((checkbox) => {
+        checkbox.addEventListener("change", () => {
+          const selectedItems = [];
+          checkboxes.forEach((checkbox) => {
+            if (checkbox.checked) {
+              selectedItems.push(checkbox.value);
+            }
+          });
+          selectedList.textContent =
+            selectedItems.length > 0 ? selectedItems.join(", ") : "Nenhuma";
+        });
+      });
+
+      // Fecha o dropdown se o usuário clicar fora
+      window.addEventListener("click", (event) => {
+        if (!event.target.closest(".dropdown")) {
+          dropdownButton.classList.remove("active");
+        }
+      });
+    </script>
+  </body>
+</html>
