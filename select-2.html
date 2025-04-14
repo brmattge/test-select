@@ -69,7 +69,9 @@
     const textoSelecionado = select.options[select.selectedIndex].text;
     const resultado = document.getElementById("resultado");
 
-    $("#btnSalvar").on("click", function () {
+    document
+    .getElementById("btnSalvar")
+    .addEventListener("click", function () {
       const valorSelecionado = $("#frutas").val();
 
       if (valorSelecionado) {
