@@ -62,7 +62,7 @@
 
 <button id="btnSalvar">Salvar</button>
 
-<script>
+<!-- <script>
   function mostrarSelecao() {
     const select = document.getElementById("frutas");
     const valorSelecionado = select.value;
@@ -82,4 +82,20 @@
       }
     });
   }
+</script> -->
+
+<script>
+  $(document).ready(function () {
+
+    $("#btnSalvar").on("click", function () {
+      const valorSelecionado = $("#frutas").val();
+
+      if (valorSelecionado && valorSelecionado.length > 0) {
+        window.parent.postMessage(
+          { name: "custom-message", data: valorSelecionado.toString() },
+          "*"
+        );
+      }
+    });
+  });
 </script>
