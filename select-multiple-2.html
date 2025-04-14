@@ -25,12 +25,22 @@
   }
 
   #frutas option {
-    padding: 5px;
+    padding: 5px 20px 5px 5px;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 
   #frutas option:checked {
     background-color: #4096ff;
     color: white;
+  }
+
+  #frutas option:checked::after {
+    content: "\2713"; /* Código Unicode para ✓ */
+    font-weight: bold;
+    margin-left: 10px;
   }
 
   #frutas:hover {
@@ -82,6 +92,12 @@
     const option = e.target;
     if (option.tagName.toLowerCase() === "option") {
       option.selected = !option.selected;
+
+      // Forçar atualização do estilo
+      const temp = option.style.display;
+      option.style.display = 'none';
+      option.offsetHeight; // Trigger reflow
+      option.style.display = temp;
 
       setTimeout(() => {
         select.scrollTop = scrollTop;
