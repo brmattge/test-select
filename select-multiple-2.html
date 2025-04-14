@@ -79,8 +79,12 @@
       const valores = Array.from(select.selectedOptions).map(
         (opt) => opt.value
       );
-      console.log("Selecionados:", valores);
-      // Enviar para o parent se precisar
-      // window.parent.postMessage({ name: "custom-message", data: valores }, "*");
+
+      if (valores && valores.length > 0) {
+        window.parent.postMessage(
+          { name: "custom-message", data: valores.toString() },
+          "*"
+        );
+      }
     });
 </script>

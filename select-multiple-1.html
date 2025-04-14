@@ -118,7 +118,7 @@
 
       if (valorSelecionado && valorSelecionado.length > 0) {
         window.parent.postMessage(
-          { name: "custom-message", data: valorSelecionado },
+          { name: "custom-message", data: valorSelecionado.toString() },
           "*"
         );
       }
