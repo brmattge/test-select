@@ -42,7 +42,7 @@
         box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
       }
 
-      #btnSalvar {
+      #btnContinuar {
         background-color: #fe3b00;
         color: white;
         border: none;
@@ -53,7 +53,7 @@
         font-size: 16px;
       }
 
-      #btnSalvar:hover {
+      #btnContinuar:hover {
         background-color: #d83400;
       }
 </style>
@@ -69,7 +69,7 @@
   <option value="melancia">Melancia</option>
 </select>
 
-<button id="btnSalvar">Salvar</button>
+<button id="btnContinuar">Continuar</button>
 
 <!-- <script>
   function mostrarSelecao() {
@@ -79,7 +79,7 @@
     const resultado = document.getElementById("resultado");
 
     document
-    .getElementById("btnSalvar")
+    .getElementById("btnContinuar")
     .addEventListener("click", function () {
       const valorSelecionado = $("#frutas").val();
 
@@ -98,7 +98,7 @@
 <script>
   $(document).ready(function () {
 
-    $("#btnSalvar").on("click", function () {
+    $("#btnContinuar").on("click", function () {
       const valorSelecionado = $("#frutas").val();
 
       if (valorSelecionado && valorSelecionado.length > 0) {
