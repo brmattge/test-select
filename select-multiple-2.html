@@ -25,11 +25,8 @@
   }
 
   #frutas option {
-    padding: 5px 5 5px 5px;
+    padding: 5px;
     position: relative;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
   }
 
   #frutas option:checked {
@@ -38,9 +35,8 @@
   }
 
   #frutas option:checked::after {
-    content: "\2713"; /* Código Unicode para ✓ */
+    content: " \2713"; /* Código Unicode para ✓ */
     font-weight: bold;
-    margin-left: 10px;
   }
 
   #frutas:hover {
