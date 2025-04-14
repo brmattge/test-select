@@ -48,7 +48,7 @@
         const valorEscolhido = event.target.value.trim();
         if (valorEscolhido) {
           window.parent.postMessage(
-            { name: "custom-dropdown", data: valorEscolhido },
+            { name: "custom-message", data: valorEscolhido },
             "*"
           );
         }

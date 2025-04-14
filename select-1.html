@@ -33,10 +33,19 @@
     box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
   }
 
-  #resultado {
+  #btnSalvar {
+    background-color: #fe3b00;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 16px;
     margin-top: 10px;
-    font-size: 14px;
-    color: #595959;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  #btnSalvar:hover {
+    background-color: #d83400;
   }
 </style>
 
@@ -49,6 +58,8 @@
   <option value="morango">Morango</option>
 </select>
 
+<button id="btnSalvar">Salvar</button>
+
 <script>
   function mostrarSelecao() {
     const select = document.getElementById("frutas");
@@ -56,11 +67,15 @@
     const textoSelecionado = select.options[select.selectedIndex].text;
     const resultado = document.getElementById("resultado");
 
-    if (valorSelecionado) {
-      window.parent.postMessage(
-        { name: "custom-dropdown", data: valorSelecionado },
-        "*"
-      );
-    }
+    $("#btnSalvar").on("click", function () {
+      const valorSelecionado = $("#frutas").val();
+
+      if (valorSelecionado) {
+        window.parent.postMessage(
+          { name: "custom-message", data: valorSelecionado },
+          "*"
+        );
+      }
+    });
   }
 </script>
