@@ -1,102 +1,90 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dropdown Select Múltiplo</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        background-color: #f5f5f5;
-        padding: 20px;
-      }
+]<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    padding: 20px;
+  }
 
-      .dropdown-container {
-        position: relative;
-        display: inline-block;
-      }
+  .dropdown-container {
+    position: relative;
+    display: inline-block;
+  }
 
-      .dropdown-button {
-        padding: 10px;
-        font-size: 16px;
-        background-color: #4096ff;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        width: 200px;
-        text-align: left;
-      }
+  .dropdown-button {
+    padding: 10px;
+    font-size: 16px;
+    background-color: #4096ff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 200px;
+    text-align: left;
+  }
 
-      select[multiple] {
-        display: none; /* Esconde o select */
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
-        z-index: 1000;
-        background-color: white;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-      }
+  select[multiple] {
+    display: none; /* Esconde o select */
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
 
-      .dropdown-container.active select[multiple] {
-        display: block; /* Exibe o select quando ativo */
-      }
+  .dropdown-container.active select[multiple] {
+    display: block; /* Exibe o select quando ativo */
+  }
 
-      select[multiple] option {
-        padding: 10px;
-      }
+  select[multiple] option {
+    padding: 10px;
+  }
 
-      .selected-items {
-        margin-top: 10px;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="dropdown-container">
-      <button class="dropdown-button">Selecione as frutas</button>
-      <select multiple size="6" id="frutas">
-        <option value="abacaxi">Abacaxi</option>
-        <option value="banana">Banana</option>
-        <option value="laranja">Laranja</option>
-        <option value="uva">Uva</option>
-        <option value="morango">Morango</option>
-        <option value="kiwi">Kiwi</option>
-        <option value="manga">Manga</option>
-        <option value="melancia">Melancia</option>
-      </select>
-    </div>
+  .selected-items {
+    margin-top: 10px;
+  }
+</style>
+<div class="dropdown-container">
+  <button class="dropdown-button">Selecione as frutas</button>
+  <select multiple size="6" id="frutas">
+    <option value="abacaxi">Abacaxi</option>
+    <option value="banana">Banana</option>
+    <option value="laranja">Laranja</option>
+    <option value="uva">Uva</option>
+    <option value="morango">Morango</option>
+    <option value="kiwi">Kiwi</option>
+    <option value="manga">Manga</option>
+    <option value="melancia">Melancia</option>
+  </select>
+</div>
+<div class="selected-items">
+  <strong>Selecionadas:</strong> <span id="selectedList">Nenhuma</span>
+</div>
+<script>
+  const dropdownButton = document.querySelector(".dropdown-button");
+  const dropdownContainer = document.querySelector(".dropdown-container");
+  const selectElement = document.getElementById("frutas");
+  const selectedList = document.getElementById("selectedList");
 
-    <div class="selected-items">
-      <strong>Selecionadas:</strong> <span id="selectedList">Nenhuma</span>
-    </div>
+  dropdownButton.addEventListener("click", () => {
+    dropdownContainer.classList.toggle("active"); // Alterna a visibilidade do dropdown
+  });
 
-    <script>
-      const dropdownButton = document.querySelector(".dropdown-button");
-      const dropdownContainer = document.querySelector(".dropdown-container");
-      const selectElement = document.getElementById("frutas");
-      const selectedList = document.getElementById("selectedList");
+  selectElement.addEventListener("change", () => {
+    const selectedItems = Array.from(selectElement.selectedOptions).map(
+      (option) => option.value
+    );
+    selectedList.textContent =
+      selectedItems.length > 0 ? selectedItems.join(", ") : "Nenhuma";
+  });
 
-      dropdownButton.addEventListener("click", () => {
-        dropdownContainer.classList.toggle("active"); // Alterna a visibilidade do dropdown
-      });
-
-      selectElement.addEventListener("change", () => {
-        const selectedItems = Array.from(selectElement.selectedOptions).map(
-          (option) => option.value
-        );
-        selectedList.textContent =
-          selectedItems.length > 0 ? selectedItems.join(", ") : "Nenhuma";
-      });
-
-      // Fecha o dropdown se o usuário clicar fora
-      window.addEventListener("click", (event) => {
-        if (!event.target.closest(".dropdown-container")) {
-          dropdownContainer.classList.remove("active");
-        }
-      });
-    </script>
-  </body>
-</html>
+  // Fecha o dropdown se o usuário clicar fora
+  window.addEventListener("click", (event) => {
+    if (!event.target.closest(".dropdown-container")) {
+      dropdownContainer.classList.remove("active");
+    }
+  });
+</script>
