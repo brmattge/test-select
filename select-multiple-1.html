@@ -1,137 +1,101 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
   <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dropdown Select Múltiplo</title>
     <style>
-      .multiselect-container {
-        position: relative;
-        width: 100%;
-        margin-bottom: 10px;
-      }
-
-      .multiselect-input {
-        width: 100%;
-        padding: 8px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        cursor: pointer;
-      }
-
-      .multiselect-dropdown {
-        position: fixed; /* Usamos fixed em vez de absolute para escapar do container */
-        z-index: 9999; /* Valor alto para garantir que fique por cima */
-        background: white;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        max-height: 300px;
-        overflow-y: auto;
-        display: none;
-      }
-
-      .multiselect-option {
-        padding: 8px 12px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-      }
-
-      .multiselect-option:hover {
+      body {
+        font-family: Arial, sans-serif;
         background-color: #f5f5f5;
+        padding: 20px;
       }
 
-      .multiselect-option input {
-        margin-right: 8px;
+      .dropdown-container {
+        position: relative;
+        display: inline-block;
       }
 
-      .selected-values {
-        margin-top: 5px;
-        font-size: 12px;
-        color: #666;
+      .dropdown-button {
+        padding: 10px;
+        font-size: 16px;
+        background-color: #4096ff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 200px;
+        text-align: left;
+      }
+
+      select[multiple] {
+        display: none; /* Esconde o select */
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        z-index: 1000;
+        background-color: white;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      }
+
+      .dropdown-container.active select[multiple] {
+        display: block; /* Exibe o select quando ativo */
+      }
+
+      select[multiple] option {
+        padding: 10px;
+      }
+
+      .selected-items {
+        margin-top: 10px;
       }
     </style>
   </head>
   <body>
-    <div class="multiselect-container">
-      <input
-        type="text"
-        class="multiselect-input"
-        placeholder="Selecione opções"
-        readonly
-      />
-      <div class="selected-values"></div>
+    <div class="dropdown-container">
+      <button class="dropdown-button">Selecione as frutas</button>
+      <select multiple size="6" id="frutas">
+        <option value="abacaxi">Abacaxi</option>
+        <option value="banana">Banana</option>
+        <option value="laranja">Laranja</option>
+        <option value="uva">Uva</option>
+        <option value="morango">Morango</option>
+        <option value="kiwi">Kiwi</option>
+        <option value="manga">Manga</option>
+        <option value="melancia">Melancia</option>
+      </select>
+    </div>
 
-      <div class="multiselect-dropdown">
-        <div class="multiselect-option">
-          <input type="checkbox" id="opt1" value="Opção 1" />
-          <label for="opt1">Opção 1</label>
-        </div>
-        <div class="multiselect-option">
-          <input type="checkbox" id="opt2" value="Opção 2" />
-          <label for="opt2">Opção 2</label>
-        </div>
-        <div class="multiselect-option">
-          <input type="checkbox" id="opt3" value="Opção 3" />
-          <label for="opt3">Opção 3</label>
-        </div>
-        <div class="multiselect-option">
-          <input type="checkbox" id="opt4" value="Opção 4" />
-          <label for="opt4">Opção 4</label>
-        </div>
-      </div>
+    <div class="selected-items">
+      <strong>Selecionadas:</strong> <span id="selectedList">Nenhuma</span>
     </div>
 
     <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const input = document.querySelector(".multiselect-input");
-        const dropdown = document.querySelector(".multiselect-dropdown");
-        const selectedValuesContainer =
-          document.querySelector(".selected-values");
-        const checkboxes = document.querySelectorAll(
-          ".multiselect-option input"
+      const dropdownButton = document.querySelector(".dropdown-button");
+      const dropdownContainer = document.querySelector(".dropdown-container");
+      const selectElement = document.getElementById("frutas");
+      const selectedList = document.getElementById("selectedList");
+
+      dropdownButton.addEventListener("click", () => {
+        dropdownContainer.classList.toggle("active"); // Alterna a visibilidade do dropdown
+      });
+
+      selectElement.addEventListener("change", () => {
+        const selectedItems = Array.from(selectElement.selectedOptions).map(
+          (option) => option.value
         );
-        let selectedValues = [];
+        selectedList.textContent =
+          selectedItems.length > 0 ? selectedItems.join(", ") : "Nenhuma";
+      });
 
-        // Abrir/fechar dropdown
-        input.addEventListener("click", function (e) {
-          e.stopPropagation();
-
-          // Posicionar o dropdown abaixo do input
-          const rect = input.getBoundingClientRect();
-          dropdown.style.top = `${rect.bottom + window.scrollY}px`;
-          dropdown.style.left = `${rect.left + window.scrollX}px`;
-          dropdown.style.width = `${rect.width}px`;
-
-          dropdown.style.display =
-            dropdown.style.display === "block" ? "none" : "block";
-        });
-
-        // Selecionar opções
-        checkboxes.forEach((checkbox) => {
-          checkbox.addEventListener("change", function () {
-            if (this.checked) {
-              selectedValues.push(this.value);
-            } else {
-              selectedValues = selectedValues.filter((v) => v !== this.value);
-            }
-
-            // Atualizar display
-            input.value =
-              selectedValues.length > 0
-                ? `${selectedValues.length} selecionadas`
-                : "";
-            selectedValuesContainer.textContent = selectedValues.join(", ");
-          });
-        });
-
-        // Fechar dropdown ao clicar fora
-        document.addEventListener("click", function () {
-          dropdown.style.display = "none";
-        });
-
-        // Prevenir fechamento ao clicar no dropdown
-        dropdown.addEventListener("click", function (e) {
-          e.stopPropagation();
-        });
+      // Fecha o dropdown se o usuário clicar fora
+      window.addEventListener("click", (event) => {
+        if (!event.target.closest(".dropdown-container")) {
+          dropdownContainer.classList.remove("active");
+        }
       });
     </script>
   </body>
