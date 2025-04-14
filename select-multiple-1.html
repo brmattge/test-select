@@ -1,90 +1,128 @@
-]<style>
+<!-- Incluindo o Select2 -->
+<link
+  href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css"
+  rel="stylesheet"
+/>
+<style>
+  /* Estilo Customizado */
   body {
-    font-family: Arial, sans-serif;
+    text-align: center;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f5f5f5;
-    padding: 20px;
   }
 
-  .dropdown-container {
-    position: relative;
-    display: inline-block;
+  /* Personalizando a aparência do campo Select2 */
+  .select2-container .select2-selection--multiple {
+    min-height: 40px;
+    padding: 8px 11px;
+    font-size: 14px;
+    border: 1px solid #d9d9d9;
+    border-radius: 6px;
+    background-color: #fff;
+    color: rgba(0, 0, 0, 0.85);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s;
+    outline: none;
   }
 
-  .dropdown-button {
-    padding: 10px;
-    font-size: 16px;
+  .select2-container .select2-selection--multiple:hover {
+    border-color: #4096ff;
+  }
+
+  .select2-container .select2-selection--multiple:focus {
+    border-color: #4096ff;
+    box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+  }
+
+  .select2-container .select2-selection__choice {
     background-color: #4096ff;
+    border-radius: 2px;
+    padding: 5px;
+    margin-right: 4px;
+  }
+
+  /* Personalizando o dropdown */
+  .select2-container .select2-dropdown {
+    max-height: 200px; /* Limita a altura do dropdown */
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    padding: 0; /* Remover padding para evitar duplicação de rolagem */
+    width: 250px !important; /* Garantir que o dropdown tenha a mesma largura do input */
+  }
+
+  .select2-container .select2-results__option {
+    font-size: 14px;
+    text-align: left;
+    padding-left: 14px;
+  }
+
+  .select2-container .select2-results__option[aria-selected="true"] {
+    background-color: #4096ff;
+    color: #fff;
+  }
+
+  .select2-container .select2-results__option:hover {
+    background-color: #f0f0f0;
+    color: rgba(0, 0, 0, 0.85);
+  }
+
+  .select2-container--default .select2-results > .select2-results__options {
+    max-height: 130px;
+    overflow-y: auto;
+  }
+
+  #btnSalvar {
+    background-color: #fe3b00;
     color: white;
     border: none;
     border-radius: 5px;
-    cursor: pointer;
-    width: 200px;
-    text-align: left;
-  }
-
-  select[multiple] {
-    display: none; /* Esconde o select */
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    z-index: 1000;
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  }
-
-  .dropdown-container.active select[multiple] {
-    display: block; /* Exibe o select quando ativo */
-  }
-
-  select[multiple] option {
-    padding: 10px;
-  }
-
-  .selected-items {
+    padding: 8px 16px;
     margin-top: 10px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  #btnSalvar:hover {
+    background-color: #d83400;
   }
 </style>
-<div class="dropdown-container">
-  <button class="dropdown-button">Selecione as frutas</button>
-  <select multiple size="6" id="frutas">
-    <option value="abacaxi">Abacaxi</option>
-    <option value="banana">Banana</option>
-    <option value="laranja">Laranja</option>
-    <option value="uva">Uva</option>
-    <option value="morango">Morango</option>
-    <option value="kiwi">Kiwi</option>
-    <option value="manga">Manga</option>
-    <option value="melancia">Melancia</option>
-  </select>
-</div>
-<div class="selected-items">
-  <strong>Selecionadas:</strong> <span id="selectedList">Nenhuma</span>
-</div>
+
+<select id="frutas" multiple="multiple">
+  <option value="abacaxi">Abacaxi</option>
+  <option value="banana">Banana</option>
+  <option value="laranja">Laranja</option>
+  <option value="uva">Uva</option>
+  <option value="morango">Morango</option>
+  <option value="kiwi">Kiwi</option>
+  <option value="manga">Manga</option>
+  <option value="melancia">Melancia</option>
+</select>
+
+<button id="btnSalvar">Salvar</button>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
 <script>
-  const dropdownButton = document.querySelector(".dropdown-button");
-  const dropdownContainer = document.querySelector(".dropdown-container");
-  const selectElement = document.getElementById("frutas");
-  const selectedList = document.getElementById("selectedList");
+  $(document).ready(function () {
+    // Inicializando o Select2
+    $("#frutas").select2({
+      placeholder: "Selecione as frutas",
+      allowClear: true,
+      width: "100%",
+      dropdownAutoWidth: true,
+      closeOnSelect: false, // Mantém o dropdown aberto
+      dropdownParent: $(document.body),
+    });
 
-  dropdownButton.addEventListener("click", () => {
-    dropdownContainer.classList.toggle("active"); // Alterna a visibilidade do dropdown
-  });
+    $("#btnSalvar").on("click", function () {
+      const valorSelecionado = $("#frutas").val();
 
-  selectElement.addEventListener("change", () => {
-    const selectedItems = Array.from(selectElement.selectedOptions).map(
-      (option) => option.value
-    );
-    selectedList.textContent =
-      selectedItems.length > 0 ? selectedItems.join(", ") : "Nenhuma";
-  });
-
-  // Fecha o dropdown se o usuário clicar fora
-  window.addEventListener("click", (event) => {
-    if (!event.target.closest(".dropdown-container")) {
-      dropdownContainer.classList.remove("active");
-    }
+      if (valorSelecionado && valorSelecionado.length > 0) {
+        window.parent.postMessage(
+          { name: "custom-message", data: valorSelecionado.toString() },
+          "*"
+        );
+      }
+    });
   });
 </script>
