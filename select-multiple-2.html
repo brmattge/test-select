@@ -1,61 +1,61 @@
 <style>
   body {
-        text-align: center;
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        background-color: #f5f5f5;
-      }
+    text-align: center;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f5f5f5;
+  }
 
-      #frutas {
-        width: 100%;
-        padding: 8px 11px;
-        font-size: 14px;
-        border: 1px solid #d9d9d9;
-        border-radius: 6px;
-        background-color: #fff;
-        color: rgba(0, 0, 0, 0.85);
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-        transition: all 0.3s;
-        outline: none;
-        appearance: none;
-        background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg fill='%23999' height='16' viewBox='0 0 24 24' width='16' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
-        background-repeat: no-repeat;
-        background-position: right 10px center;
-        background-size: 16px;
-        cursor: pointer;
-      }
+  #frutas {
+    width: 100%;
+    padding: 8px 11px;
+    font-size: 14px;
+    border: 1px solid #d9d9d9;
+    border-radius: 6px;
+    background-color: #fff;
+    color: rgba(0, 0, 0, 0.85);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s;
+    outline: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg fill='%23999' height='16' viewBox='0 0 24 24' width='16' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px;
+    cursor: pointer;
+  }
 
-      #frutas option {
-        padding: 5px;
-      }
+  #frutas option {
+    padding: 5px;
+  }
 
-      #frutas option:checked {
-        background-color: #4096ff; /* Cor de fundo para o item selecionado */
-        color: white; /* Cor do texto para o item selecionado */
-      }
+  #frutas option:checked {
+    background-color: #4096ff;
+    color: white;
+  }
 
-      #frutas:hover {
-        border-color: #4096ff;
-      }
+  #frutas:hover {
+    border-color: #4096ff;
+  }
 
-      #frutas:focus {
-        border-color: #4096ff;
-        box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
-      }
+  #frutas:focus {
+    border-color: #4096ff;
+    box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+  }
 
-      #btnSalvar {
-        background-color: #fe3b00;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        padding: 8px 16px;
-        margin-top: 10px;
-        cursor: pointer;
-        font-size: 16px;
-      }
+  #btnSalvar {
+    background-color: #fe3b00;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 16px;
+    margin-top: 10px;
+    cursor: pointer;
+    font-size: 16px;
+  }
 
-      #btnSalvar:hover {
-        background-color: #d83400;
-      }
+  #btnSalvar:hover {
+    background-color: #d83400;
+  }
 </style>
 
 <select id="frutas" multiple size="5">
@@ -75,25 +75,28 @@
   const select = document.getElementById("frutas");
 
   select.addEventListener("mousedown", function (e) {
-    e.preventDefault(); // Impede o comportamento padrão
+    e.preventDefault();
+
+    const scrollTop = select.scrollTop;
+
     const option = e.target;
     if (option.tagName.toLowerCase() === "option") {
-      option.selected = !option.selected; // Alterna seleção
+      option.selected = !option.selected;
+
+      setTimeout(() => {
+        select.scrollTop = scrollTop;
+      }, 0);
     }
   });
 
-  document
-    .getElementById("btnSalvar")
-    .addEventListener("click", function () {
-      const valores = Array.from(select.selectedOptions).map(
-        (opt) => opt.value
-      );
+  document.getElementById("btnSalvar").addEventListener("click", function () {
+    const valores = Array.from(select.selectedOptions).map((opt) => opt.value);
 
-      if (valores && valores.length > 0) {
-        window.parent.postMessage(
-          { name: "custom-message", data: valores.toString() },
-          "*"
-        );
-      }
-    });
+    if (valores && valores.length > 0) {
+      window.parent.postMessage(
+        { name: "custom-message", data: valores.toString() },
+        "*"
+      );
+    }
+  });
 </script>
