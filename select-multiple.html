@@ -70,42 +70,41 @@
 </style>
 
 <select id="selectOptions" multiple size="5">
-  <!-- As opções serão inseridas dinamicamente aqui -->
+  <option value="abacaxi">Abacaxi</option>
+  <option value="banana">Banana</option>
+  <option value="laranja">Laranja</option>
+  <option value="uva">Uva</option>
+  <option value="morango">Morango</option>
+  <option value="kiwi">Kiwi</option>
+  <option value="manga">Manga</option>
+  <option value="melancia">Melancia</option>
 </select>
 
 <button id="btnContinuar">Continuar</button>
 
 <script>
-  // Função para pegar as opções da URL
-  function getOptionsFromURL() {
-    const params = new URLSearchParams(window.location.search);
-    const rawOptions = params.get("options");
+  const select = document.getElementById("selectOptions");
 
-    if (!rawOptions) return [];  // Se não tiver opções na URL, retorna um array vazio
+  select.addEventListener("mousedown", function (e) {
+    e.preventDefault();
 
-    // Se for uma string simples como "banana,laranja,melancia"
-    return rawOptions.split(",").map(item => ({
-      label: item.trim(),
-      value: item.trim().toLowerCase()
-    }));
-  }
+    const scrollTop = select.scrollTop;
 
-  // Renderiza as opções assim que a página for carregada
-  document.addEventListener("DOMContentLoaded", () => {
-    const select = document.getElementById("selectOptions");
-    const options = getOptionsFromURL();  // Obtém as opções da URL
+    const option = e.target;
+    if (option.tagName.toLowerCase() === "option") {
+      option.selected = !option.selected;
 
-    select.innerHTML = "";  // Limpa qualquer conteúdo pré-existente
-    options.forEach(opt => {
-      const option = document.createElement("option");
-      option.value = opt.value;
-      option.textContent = opt.label;
-      select.appendChild(option);
-    });
+      const temp = option.style.display;
+      option.style.display = 'none';
+      option.offsetHeight;
+      option.style.display = temp;
+
+      setTimeout(() => {
+        select.scrollTop = scrollTop;
+      }, 0);
+    }
   });
 
-  // Adiciona o comportamento para o botão "Continuar"
-  const select = document.getElementById("selectOptions");
   document.getElementById("btnContinuar").addEventListener("click", function () {
     const valores = Array.from(select.selectedOptions).map((opt) => opt.value);
 
