@@ -47,17 +47,19 @@
   #btnContinuar:hover {
     background-color: #d83400;
   }
+
+  /* Estilizando as opções do select */
+  #selectOptions option {
+    padding: 5px 10px;
+  }
+
+  #selectOptions option:hover {
+    background-color: #4096ff; /* Azul de fundo */
+    color: white; /* Texto branco */
+  }
 </style>
 
 <select id="selectOptions">
-  <option value="abacaxi">Abacaxi</option>
-  <option value="banana">Banana</option>
-  <option value="laranja">Laranja</option>
-  <option value="uva">Uva</option>
-  <option value="morango">Morango</option>
-  <option value="kiwi">Kiwi</option>
-  <option value="manga">Manga</option>
-  <option value="melancia">Melancia</option>
 </select>
 
 <button id="btnContinuar">Continuar</button>
@@ -66,6 +68,41 @@
 
 <script>
   $(document).ready(function () {
+    function getOptionsFromURL() {
+  const params = new URLSearchParams(window.location.search);
+  const rawOptions = params.get("options");
+
+  if (!rawOptions) return [];
+
+  // Suporte para array de objetos no futuro (ex: JSON.stringify no Typebot)
+  try {
+    if (rawOptions.startsWith("[") || rawOptions.startsWith("{")) {
+      return JSON.parse(rawOptions);
+    }
+  } catch (e) {
+    console.warn("Erro ao fazer parse das opções como JSON:", e);
+  }
+
+  // Caso simples: "banana,laranja,melancia"
+  return rawOptions.split(",").map(item => ({
+    label: item.trim(),
+    value: item.trim().toLowerCase()
+  }));
+}
+
+// Renderiza as opções assim que a página carrega
+document.addEventListener("DOMContentLoaded", () => {
+  const select = document.getElementById("selectOptions");
+  const options = getOptionsFromURL();
+
+  select.innerHTML = "";
+  options.forEach(opt => {
+    const option = document.createElement("option");
+    option.value = opt.value;
+    option.textContent = opt.label;
+    select.appendChild(option);
+  });
+});
 
     $("#btnContinuar").on("click", function () {
       const valorSelecionado = $("#selectOptions").val();
