@@ -17,15 +17,11 @@
     transition: all 0.3s;
     outline: none;
     appearance: none;
-    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg fill='%23999' height='16' viewBox='0 0 24 24' width='16' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 10px center;
-    background-size: 16px;
     cursor: pointer;
   }
 
   #selectOptions option {
-    padding: 5px 5px 5px 5px;
+    padding: 5px;
     position: relative;
     display: flex;
     justify-content: space-between;
@@ -39,7 +35,7 @@
   }
 
   #selectOptions option:checked::after {
-    content: "\2713"; /* Código Unicode para ✓ */
+    content: "\2713";
     font-weight: bold;
     margin-left: 10px;
   }
@@ -69,33 +65,41 @@
   }
 </style>
 
-<select id="selectOptions" multiple size="5">
-  <option value="abacaxi">Abacaxi</option>
-  <option value="banana">Banana</option>
-  <option value="laranja">Laranja</option>
-  <option value="uva">Uva</option>
-  <option value="morango">Morango</option>
-  <option value="kiwi">Kiwi</option>
-  <option value="manga">Manga</option>
-  <option value="melancia">Melancia</option>
-</select>
-
+<select id="selectOptions" multiple size="5"></select>
 <button id="btnContinuar">Continuar</button>
 
 <script>
   const select = document.getElementById("selectOptions");
 
+  // Recebe as opções via postMessage do Typebot
+  window.addEventListener("message", function (event) {
+    if (event.data?.name === "load-options") {
+      const options = event.data.data;
+
+      if (Array.isArray(options)) {
+        select.innerHTML = ""; // Limpa as opções existentes
+
+        options.forEach(opt => {
+          const option = document.createElement("option");
+          option.value = opt.value;
+          option.textContent = opt.label;
+          select.appendChild(option);
+        });
+      }
+    }
+  });
+
+  // Seleção múltipla com clique simples
   select.addEventListener("mousedown", function (e) {
     e.preventDefault();
-
     const scrollTop = select.scrollTop;
-
     const option = e.target;
+
     if (option.tagName.toLowerCase() === "option") {
       option.selected = !option.selected;
 
       const temp = option.style.display;
-      option.style.display = 'none';
+      option.style.display = "none";
       option.offsetHeight;
       option.style.display = temp;
 
@@ -105,12 +109,13 @@
     }
   });
 
+  // Envia as opções selecionadas
   document.getElementById("btnContinuar").addEventListener("click", function () {
-    const valores = Array.from(select.selectedOptions).map((opt) => opt.value);
+    const valores = Array.from(select.selectedOptions).map(opt => opt.value);
 
-    if (valores && valores.length > 0) {
+    if (valores.length > 0) {
       window.parent.postMessage(
-        { name: "custom-message", data: valores.toString() },
+        { name: "custom-message", data: valores },
         "*"
       );
     }
