@@ -67,8 +67,8 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
-  $(document).ready(function () {
-    function getOptionsFromURL() {
+
+function getOptionsFromURL() {
   const params = new URLSearchParams(window.location.search);
   const rawOptions = params.get("options");
 
@@ -90,7 +90,8 @@
   }));
 }
 
-// Renderiza as opções assim que a página carrega
+  $(document).ready(function () {
+    // Renderiza as opções assim que a página carrega
 document.addEventListener("DOMContentLoaded", () => {
   const select = document.getElementById("selectOptions");
   const options = getOptionsFromURL();
@@ -103,6 +104,8 @@ document.addEventListener("DOMContentLoaded", () => {
     select.appendChild(option);
   });
 });
+
+
 
     $("#btnContinuar").on("click", function () {
       const valorSelecionado = $("#selectOptions").val();
