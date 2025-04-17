@@ -5,7 +5,7 @@
     background-color: #f5f5f5;
   }
 
-  #frutas {
+  #selectOptions {
     width: 100%;
     padding: 8px 11px;
     font-size: 14px;
@@ -24,7 +24,7 @@
     cursor: pointer;
   }
 
-  #frutas option {
+  #selectOptions option {
     padding: 5px 5px 5px 5px;
     position: relative;
     display: flex;
@@ -33,22 +33,22 @@
     min-height: 20px;
   }
 
-  #frutas option:checked {
+  #selectOptions option:checked {
     background-color: #4096ff;
     color: white;
   }
 
-  #frutas option:checked::after {
+  #selectOptions option:checked::after {
     content: "\2713"; /* Código Unicode para ✓ */
     font-weight: bold;
     margin-left: 10px;
   }
 
-  #frutas:hover {
+  #selectOptions:hover {
     border-color: #4096ff;
   }
 
-  #frutas:focus {
+  #selectOptions:focus {
     border-color: #4096ff;
     box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
   }
@@ -69,7 +69,7 @@
   }
 </style>
 
-<select id="frutas" multiple size="5">
+<select id="selectOptions" multiple size="5">
   <option value="abacaxi">Abacaxi</option>
   <option value="banana">Banana</option>
   <option value="laranja">Laranja</option>
@@ -83,7 +83,7 @@
 <button id="btnContinuar">Continuar</button>
 
 <script>
-  const select = document.getElementById("frutas");
+  const select = document.getElementById("selectOptions");
 
   select.addEventListener("mousedown", function (e) {
     e.preventDefault();

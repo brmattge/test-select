@@ -5,7 +5,7 @@
     background-color: #f5f5f5;
   }
 
-  #frutas {
+  #selectOptions {
     width: 100%;
     padding: 8px 11px;
     font-size: 14px;
@@ -24,11 +24,11 @@
     cursor: pointer;
   }
 
-  #frutas:hover {
+  #selectOptions:hover {
     border-color: #4096ff;
   }
 
-  #frutas:focus {
+  #selectOptions:focus {
     border-color: #4096ff;
     box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
   }
@@ -49,7 +49,7 @@
   }
 </style>
 
-<select id="frutas">
+<select id="selectOptions">
   <option value="abacaxi">Abacaxi</option>
   <option value="banana">Banana</option>
   <option value="laranja">Laranja</option>
@@ -62,35 +62,13 @@
 
 <button id="btnContinuar">Continuar</button>
 
-<!-- <script>
-  function mostrarSelecao() {
-    const select = document.getElementById("frutas");
-    const valorSelecionado = select.value;
-    const textoSelecionado = select.options[select.selectedIndex].text;
-    const resultado = document.getElementById("resultado");
-
-    document
-    .getElementById("btnContinuar")
-    .addEventListener("click", function () {
-      const valorSelecionado = $("#frutas").val();
-
-      if (valorSelecionado) {
-        window.parent.postMessage(
-          { name: "custom-message", data: valorSelecionado },
-          "*"
-        );
-      }
-    });
-  }
-</script> -->
-
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
   $(document).ready(function () {
 
     $("#btnContinuar").on("click", function () {
-      const valorSelecionado = $("#frutas").val();
+      const valorSelecionado = $("#selectOptions").val();
 
       if (valorSelecionado && valorSelecionado.length > 0) {
         window.parent.postMessage(
