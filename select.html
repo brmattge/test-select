@@ -68,41 +68,22 @@
 
 <script>
   $(document).ready(function () {
-    function getOptionsFromURL() {
-  const params = new URLSearchParams(window.location.search);
-  const rawOptions = params.get("options");
-
-  if (!rawOptions) return [];
-
-  // Suporte para array de objetos no futuro (ex: JSON.stringify no Typebot)
-  try {
-    if (rawOptions.startsWith("[") || rawOptions.startsWith("{")) {
-      return JSON.parse(rawOptions);
+    function getUrlParameter(name) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(name);
     }
-  } catch (e) {
-    console.warn("Erro ao fazer parse das opções como JSON:", e);
-  }
 
-  // Caso simples: "banana,laranja,melancia"
-  return rawOptions.split(",").map(item => ({
-    label: item.trim(),
-    value: item.trim().toLowerCase()
-  }));
-}
+    // Obter as opções da URL
+    const options = getUrlParameter('options');
 
-// Renderiza as opções assim que a página carrega
-document.addEventListener("DOMContentLoaded", () => {
-  const select = document.getElementById("selectOptions");
-  const options = getOptionsFromURL();
+    if (options) {
+      const optionsArray = options.split(',');
 
-  select.innerHTML = "";
-  options.forEach(opt => {
-    const option = document.createElement("option");
-    option.value = opt.value;
-    option.textContent = opt.label;
-    select.appendChild(option);
-  });
-});
+      // Adicionar as opções ao select
+      optionsArray.forEach(function (option) {
+        $('#selectOptions').append(new Option(option, option));
+      });
+    }
 
     $("#btnContinuar").on("click", function () {
       const valorSelecionado = $("#selectOptions").val();
